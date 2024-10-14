@@ -1,0 +1,31 @@
+import websocket
+import time
+
+def on_message(ws, message):
+    print(f"Received message: {message}")
+
+def on_error(ws, error):
+    print(f"Error: {error}")
+
+def on_close(ws, close_status_code, close_msg):
+    print("Closed WebSocket connection")
+
+def on_open(ws):
+    message = "Hello, WebSocket Server!"
+    ws.send(message)
+    print(f"Sent message: {message}")
+
+if __name__ == "__main__":
+    # Remplacez l'URL par celle de votre serveur WebSocket
+    websocket_url = "ws://127.0.0.1:5000/socket.io/?transport=websocket"
+
+    # Création d'une connexion WebSocket
+    ws = websocket.WebSocketApp(websocket_url,
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close)
+
+    ws.on_open = on_open
+
+    # Démarrage de la boucle d'événements
+    ws.run_forever()
